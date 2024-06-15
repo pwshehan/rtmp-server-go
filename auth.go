@@ -9,15 +9,10 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/auth", func(c *gin.Context) {
-		streamKey := c.Query("name")
+	router.POST("/auth", func(c *gin.Context) {
+		streamKey := c.PostForm("name")
 
-		validStreamKeys := map[string]bool{
-			"validstreamkey1": true,
-			"validstreamkey2": true,
-		}
-
-		if validStreamKeys[streamKey] {
+		if isValidStreamKey(streamKey) {
 			c.String(http.StatusOK, "OK")
 		} else {
 			c.String(http.StatusForbidden, "Invalid stream key")
@@ -25,4 +20,12 @@ func main() {
 	})
 
 	router.Run(":8081")
+}
+
+func isValidStreamKey(key string) bool {
+	validStreamKeys := map[string]bool{
+		"validstreamkey1": true,
+		"validstreamkey2": true,
+	}
+	return validStreamKeys[key]
 }
