@@ -18,4 +18,6 @@ COPY --from=builder /app/auth_server .
 
 RUN apk --no-cache add ca-certificates
 
-CMD [ "./auth_server" ]
+EXPOSE 8081
+
+CMD ["./auth_server"]
