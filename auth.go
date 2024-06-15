@@ -7,7 +7,20 @@ import (
 
 func main() {
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+		streamKey := r.URL.Query().Get("name")
+
+		validStreamKeys := map[string]bool{
+			"validstreamkey1": true,
+			"validstreamkey2": true,
+		}
+
+		if validStreamKeys[streamKey] {
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprintf(w, "OK")
+		} else {
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintf(w, "Invalid stream key")
+		}
 	})
 
 	fmt.Println("Starting server on :8081")
